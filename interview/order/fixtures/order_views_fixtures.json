@@ -1,0 +1,82 @@
+[
+
+
+{
+    "model": "inventory.inventorylanguage",
+    "pk": 1,
+    "fields": {
+        "created_at": "2024-05-30T19:36:17.594Z",
+        "updated_at": "2024-05-30T19:36:17.594Z",
+        "name": "Abkhaz"
+    }
+},
+{
+  "model": "inventory.inventorytype",
+  "pk": 3,
+  "fields": {
+      "created_at": "2024-05-30T19:36:17.713Z",
+      "updated_at": "2024-05-30T19:36:17.713Z",
+      "name": "Version"
+  }
+},
+{
+  "model": "inventory.inventorytag",
+  "pk": 1,
+  "fields": {
+      "created_at": "2024-05-30T19:36:17.701Z",
+      "updated_at": "2024-05-30T19:36:17.701Z",
+      "is_active": true,
+      "name": "Action"
+  }
+},
+{
+    "model": "order.ordertag",
+    "pk": 1,
+    "fields": {
+        "created_at": "2024-05-30T19:36:17.701Z",
+        "updated_at": "2024-05-30T19:36:17.701Z",
+        "is_active": true,
+        "name": "A Tag"
+    }
+  },
+  
+{
+    "model": "order.order",
+    "pk": 1,
+    "fields": {
+        "created_at": "2024-05-30T19:36:17.811Z",
+        "updated_at": "2024-05-30T19:36:17.811Z",
+        "is_active": false,
+        "inventory": 1,
+        "start_date": "2024-05-30",
+        "embargo_date": "2024-06-29",
+        "tags": [
+            1
+        ]
+    }
+},
+{
+    "model": "inventory.inventory",
+    "pk": 1,
+    "fields": {
+        "created_at": "2024-05-01T19:36:17.716Z",
+        "updated_at": "2024-05-30T19:36:17.716Z",
+        "name": "The Matrix",
+        "type": 3,
+        "language": 1,
+        "metadata": {
+            "year": 1999,
+            "actors": [
+                "Keanu Reeves",
+                "Laurence Fishburne",
+                "Carrie-Anne Moss"
+            ],
+            "imdb_rating": 8.7,
+            "rotten_tomatoes_rating": 87
+        },
+        "tags": [
+            1
+        ]
+    }
+}
+]
