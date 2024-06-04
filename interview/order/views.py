@@ -17,9 +17,15 @@ class OrderListCreateView(generics.ListCreateAPIView):
     
     def get_queryset(self):
         queryset = Order.objects.all()
-        start_date = parse_datetime(self.request.query_params.get('start_date'))
-        embargo_date = parse_datetime(self.request.query_params.get('embargo_date'))
-        if start_date and embargo_date:
+
+        # parse query string parameters
+        start_date_query = self.request.query_params.get('start_date')
+        embargo_date_query = self.request.query_params.get('embargo_date')
+        
+        # filter queryset within both dates if valid dates are provided together
+        if start_date_query and embargo_date_query:
+            start_date = parse_datetime(start_date_query)
+            embargo_date = parse_datetime(embargo_date_query)
             queryset = queryset.filter(start_date__gte=start_date, embargo_date__lte=embargo_date)
 
         return queryset
