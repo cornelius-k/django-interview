@@ -4,7 +4,7 @@ from interview.core.behaviors import IsActiveModel, NameModel, TimestampedModel,
 
 
 class InventoryTag(UniqueNameModel, TimestampedModel, IsActiveModel, models.Model):
-        
+      
     def __str__(self) -> str:
         return self.name
 

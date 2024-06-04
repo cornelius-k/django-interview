@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from interview.inventory.models import Inventory, InventoryLanguage, InventoryTag, InventoryType
 from interview.inventory.schemas import InventoryMetaData
 from interview.inventory.serializers import InventoryLanguageSerializer, InventorySerializer, InventoryTagSerializer, InventoryTypeSerializer
+from django.utils.dateparse import parse_datetime
 
 
 class InventoryListCreateView(APIView):
@@ -26,14 +27,24 @@ class InventoryListCreateView(APIView):
         
         return Response(serializer.data, status=201)
     
-    def get(self, request: Request, *args, **kwargs) -> Response:
-        serializer = self.serializer_class(self.get_queryset(), many=True)
-        
+    def get(self, request, *args, **kwargs) -> Response:
+
+        # check for after-date query string and filter queryset
+        if request.GET.get('after-date'):
+            after_date = parse_datetime(request.GET.get('after-date'))
+            if not after_date:
+                return Response("Invalid date provided. Please provide a valid ISO 8601 string including timezone. ex '2020-10-03T19:00:00+0200' ", status=400)
+            self.queryset = self.queryset.filter(created_at__gt=after_date)
+    
+        serializer = self.serializer_class(self.queryset, many=True)
+
         return Response(serializer.data, status=200)
     
     def get_queryset(self):
         return self.queryset.all()
     
+
+        
 
 class InventoryRetrieveUpdateDestroyView(APIView):
     queryset = Inventory.objects.all()
