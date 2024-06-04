@@ -5,12 +5,20 @@ from rest_framework.views import APIView
 from interview.inventory.models import Inventory, InventoryLanguage, InventoryTag, InventoryType
 from interview.inventory.schemas import InventoryMetaData
 from interview.inventory.serializers import InventoryLanguageSerializer, InventorySerializer, InventoryTagSerializer, InventoryTypeSerializer
+from rest_framework.pagination import LimitOffsetPagination
+
+INVENTORY_LIST_DEFAULT_PAGE_SIZE = 3
+INVENTORY_LIST_MAX_PAGE_SIZE = 3
 
 
-class InventoryListCreateView(APIView):
+class CustomLimitOffsetPagination(LimitOffsetPagination):
+    default_limit = INVENTORY_LIST_DEFAULT_PAGE_SIZE
+    max_limit = INVENTORY_LIST_MAX_PAGE_SIZE
+
+class InventoryListCreateView(APIView, CustomLimitOffsetPagination):
     queryset = Inventory.objects.all()
     serializer_class = InventorySerializer
-    
+
     def post(self, request: Request, *args, **kwargs) -> Response:
         try:
             metadata = InventoryMetaData(**request.data['metadata'])
@@ -27,9 +35,16 @@ class InventoryListCreateView(APIView):
         return Response(serializer.data, status=201)
     
     def get(self, request: Request, *args, **kwargs) -> Response:
-        serializer = self.serializer_class(self.get_queryset(), many=True)
+        '''
+        return a paginated results set, using querystring paramaters
         
-        return Response(serializer.data, status=200)
+            limit=<int>
+            offset=<int>
+        '''
+        results = self.paginate_queryset(self.get_queryset(), request, self)
+        serializer = self.serializer_class(results, many=True)
+        
+        return self.get_paginated_response(serializer.data)
     
     def get_queryset(self):
         return self.queryset.all()
