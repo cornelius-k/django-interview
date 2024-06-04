@@ -1,3 +1,6 @@
 from django.contrib import admin
+from .models import Order, OrderTag
 
-# Register your models here.
+# add order models to admin
+admin.site.register(Order)
+admin.site.register(OrderTag)
