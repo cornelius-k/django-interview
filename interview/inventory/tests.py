@@ -1,27 +1,11 @@
 from django.test import TestCase
 from django.utils.http import urlencode
-from interview.inventory.models import Inventory
-from datetime import datetime, timedelta
-from django.utils.dateparse import parse_datetime
-from interview.inventory import views
 from rest_framework.response import Response
-from urllib.parse import urlencode
 from interview.inventory.views import INVENTORY_LIST_DEFAULT_PAGE_SIZE, INVENTORY_LIST_MAX_PAGE_SIZE
 
 
 class TestInventoryViews(TestCase):
-    fixtures = ['inventory_views_fixtures.json']
-    inventory_objs = Inventory.objects.all().order_by('created_at')
-    
-    # @classmethod
-    # def setUpClass(cls):
-    #     '''
-    #     Clear all Inventory objects before running tests
-    #     so that only those provided in fixtures are present in database
-    #     '''
-    #     all_inventory = Inventory.objects.all()
-    #     all_inventory.delete()
-    #     super(TestInventoryViews, cls).setUpClass()
+    fixtures = ['inventory_views_fixtures.json']    
 
     def request_with_querystring(self, path, **kwargs) -> Response:
         '''
