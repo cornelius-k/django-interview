@@ -23,6 +23,15 @@ class DeactivateOrderView(APIView):
     serializer_class = OrderSerializer
 
     def patch(self, request: Request, *args, **kwargs) -> Response:
+        '''
+        Update an order to set is_active to the value provided in request
+
+        expected request body:
+        {
+            "is_active": true|false
+        }
+        '''
+
         order = self.get_queryset(id=kwargs['id'])
         update_data = {'is_active': request.data['is_active']}
         serializer = self.serializer_class(order, data=update_data, partial=True)
